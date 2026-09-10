@@ -1,0 +1,29 @@
+class Solution:
+    def findMax(self, n: int) -> int:
+        def get_digit_sum(num):
+            return sum(int(digit) for digit in str(num))
+        
+        ans = n
+        max_sum = get_digit_sum(n)
+        
+        x = n
+        b = 1
+        
+        while x > 0:
+            # Generate candidate: decrement block by 1 and fill trailing positions with 9s
+            candidate = (x - 1) * b + (b - 1)
+            
+            # Ensure candidate is within the valid range [1, n]
+            if 1 <= candidate <= n:
+                current_sum = get_digit_sum(candidate)
+                
+                if current_sum > max_sum:
+                    max_sum = current_sum
+                    ans = candidate
+                elif current_sum == max_sum:
+                    ans = max(ans, candidate)
+                    
+            x //= 10
+            b *= 10
+            
+        return ans
